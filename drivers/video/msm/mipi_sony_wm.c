@@ -77,7 +77,7 @@ struct lcd_state_type {
     boolean disp_on;
 #ifdef CONFIG_LCD_CABC_CONTROL
 		int acl_flag;
-#endif	
+#endif
 	struct mutex lcd_mutex;
 };
 
@@ -100,9 +100,9 @@ char panelctl_1[21]       = {0xf6, 0x02,0x11,0x0f,0x25,0x0a,0x00,0x13,0x22,0x1b,
 #endif
 
 static struct dsi_cmd_desc sony_display_off_cmds[] = {
-#if defined (FEATURE_WS20_SAMPLE) || defined (FEATURE_TP10_SAMPLE)	
+#if defined (FEATURE_WS20_SAMPLE) || defined (FEATURE_TP10_SAMPLE)
 	{DTYPE_DCS_WRITE, 1, 0, 0, 0, sizeof(disp_off), disp_off},
-#endif	
+#endif
 	{DTYPE_DCS_WRITE, 1, 0, 0, 130, sizeof(sleep_in), sleep_in}
 };
 
@@ -116,45 +116,45 @@ static struct dsi_cmd_desc sony_display_init_ws10_cmds[] = {
 	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(dsctl), dsctl},
 	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrdisbv), wrdisbv},
 	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrctrld), wrctrld},
-	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrcbc), wrcbc},	
+	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrcbc), wrcbc},
 };
 
 static struct dsi_cmd_desc sony_display_init_ws20_cmds[] = {
 	{DTYPE_DCS_WRITE, 1, 0, 0, 150, sizeof(sleep_out), sleep_out},
 	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrdisbv), wrdisbv},
 	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrctrld), wrctrld},
-	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrcbc), wrcbc},	
+	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrcbc), wrcbc},
 };
 #else
 static struct dsi_cmd_desc sony_display_init_cmds[] = {
 	{DTYPE_DCS_WRITE, 1, 0, 0, 150, sizeof(sleep_out), sleep_out},
-#ifdef FEATURE_QUALCOMM_BUG_FIX_LCD_MDP_TIMING_GENERATOR_ON	
+#ifdef FEATURE_QUALCOMM_BUG_FIX_LCD_MDP_TIMING_GENERATOR_ON
 	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(nvm_access_en_1), nvm_access_en_1},
 	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(nvm_access_en_2), nvm_access_en_2},
 	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(panelctl_1), panelctl_1},
 #endif
-#if defined (FEATURE_WS10_SAMPLE) ||defined (FEATURE_TP10_SAMPLE)		
-	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(dsctl), dsctl},	
-#endif	
+#if defined (FEATURE_WS10_SAMPLE) ||defined (FEATURE_TP10_SAMPLE)
+	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(dsctl), dsctl},
+#endif
 };
 #endif
 
 static struct dsi_cmd_desc sony_display_cabc_on_cmds[] = {
 	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrdisbv), wrdisbv},
 	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrctrld), wrctrld},
-	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrcbc_on), wrcbc_on},	
+	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrcbc_on), wrcbc_on},
 
 };
 
 static struct dsi_cmd_desc sony_display_cabc_off_cmds[] = {
 	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrdisbv), wrdisbv},
 	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrctrld), wrctrld},
-	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrcbc_off), wrcbc_off},	
+	{DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrcbc_off), wrcbc_off},
 };
 
 static struct dsi_cmd_desc sony_display_cabc_bl_set_cmds[] = {
     {DTYPE_DCS_LWRITE, 1, 0, 0, 0, sizeof(wrdisbv), wrdisbv}
-};     
+};
 
 #ifdef FEATURE_SONYWM_ID_READ
 static uint8 module_vender;
@@ -194,22 +194,22 @@ static uint32 mipi_sonywm_manufacture_id(struct msm_fb_data_type *mfd)
 #ifdef CONFIG_LCD_CABC_CONTROL
 void cabc_contol(struct msm_fb_data_type *mfd, int state)
 {
-       mutex_lock(&sony_state.lcd_mutex);	
+       mutex_lock(&sony_state.lcd_mutex);
 	mipi_set_tx_power_mode(0);
 	if(state == true){
-		
+
 		mipi_dsi_cmds_tx(&sony_tx_buf, sony_display_cabc_off_cmds,
 								ARRAY_SIZE(sony_display_cabc_off_cmds));
 		sony_state.acl_flag = true;
 	}
-	else{ 
+	else{
 		mipi_dsi_cmds_tx(&sony_tx_buf, sony_display_cabc_on_cmds,
 							ARRAY_SIZE(sony_display_cabc_on_cmds));
 		sony_state.acl_flag = false;
 	}
-	mipi_set_tx_power_mode(1);	
-       mutex_unlock(&sony_state.lcd_mutex);	
-	
+	mipi_set_tx_power_mode(1);
+       mutex_unlock(&sony_state.lcd_mutex);
+
 	printk(KERN_WARNING"mipi_sharp CABC = %d\n",state);
 
 }
@@ -227,8 +227,8 @@ static int mipi_sony_lcd_on(struct platform_device *pdev)
 		return -ENODEV;
 	if (mfd->key != MFD_KEY)
 		return -EINVAL;
-	
-    mutex_lock(&sony_state.lcd_mutex);	
+
+    mutex_lock(&sony_state.lcd_mutex);
 	if (sony_state.disp_initialized == false) {
 
 #ifdef FEATURE_SONYWM_ID_READ
@@ -255,18 +255,18 @@ else
 									ARRAY_SIZE(sony_display_cabc_off_cmds));
 
 	}
-	else{ 
-	
+	else{
+
 	mipi_dsi_cmds_tx(&sony_tx_buf, sony_display_cabc_on_cmds,
 			ARRAY_SIZE(sony_display_cabc_on_cmds));
 	}
 #else
-				
+
 	mipi_dsi_cmds_tx(&sony_tx_buf, sony_display_cabc_on_cmds,
 				ARRAY_SIZE(sony_display_cabc_on_cmds));
 #endif
-    mutex_unlock(&sony_state.lcd_mutex);	
-	
+    mutex_unlock(&sony_state.lcd_mutex);
+
 	EXIT_FUNC2();
 	return 0;
 }
@@ -289,20 +289,19 @@ static int mipi_sony_lcd_off(struct platform_device *pdev)
 			gpio_set_value_cansleep(gpio24, GPIO_LOW_VALUE);
 		if(gpio_get_value_cansleep(gpio16))
 			gpio_set_value_cansleep(gpio16, GPIO_LOW_VALUE);
-		msleep(10);		
+		msleep(10);
     wrdisbv[1] =0;
 #endif
-	
-    mutex_lock(&sony_state.lcd_mutex);	
+
+    mutex_lock(&sony_state.lcd_mutex);
 	if (sony_state.disp_on == true) {
 		mipi_dsi_cmds_tx(&sony_tx_buf, sony_display_off_cmds,
 				ARRAY_SIZE(sony_display_off_cmds));
 		sony_state.disp_on = false;
 		sony_state.disp_initialized = false;
-		
 	}
-    mutex_unlock(&sony_state.lcd_mutex);	
-	
+    mutex_unlock(&sony_state.lcd_mutex);
+
        EXIT_FUNC2();
 	return 0;
 }
@@ -355,10 +354,9 @@ static void mipi_sony_set_backlight(struct msm_fb_data_type *mfd)
 				local_irq_disable();
 				udelay(5);//DELAY_3NS();//udelay(3);      // Turn off time
 				local_irq_restore(flags);
-				
 				gpio_set_value_cansleep(gpio24 ,GPIO_HIGH_VALUE);
 				local_save_flags(flags);
-				local_irq_disable();	
+				local_irq_disable();
 				udelay(20);      // Turn on time
 				local_irq_restore(flags);
 				cnt--;
@@ -378,8 +376,8 @@ int bl_level;
     bl_level = (mfd->bl_level *255)/16;
 
 //20130102_EF44S backlight PWM min duty
-if(bl_level < 31 && bl_level > 0)
-	bl_level = 31;
+/*if(bl_level < 31 && bl_level > 0)
+	bl_level = 31;*/
 
 printk("mipi_sony_set_backlight prev_bl_level =%d,mfd->bl_level=%d, bl_level =%d\n",prev_bl_level,mfd->bl_level, bl_level);
 
@@ -388,9 +386,9 @@ printk("mipi_sony_set_backlight prev_bl_level =%d,mfd->bl_level=%d, bl_level =%d
 #ifdef FEATURE_RENESAS_BL_CTRL_CHG
 	if(!gpio_get_value_cansleep(gpio24))
 		gpio_set_value_cansleep(gpio24, GPIO_HIGH_VALUE);
-        udelay(10);	
+        udelay(10);
 	if(!gpio_get_value_cansleep(gpio16))
-		gpio_set_value_cansleep(gpio16, GPIO_HIGH_VALUE);	
+		gpio_set_value_cansleep(gpio16, GPIO_HIGH_VALUE);
 #else
     if(first_enable == 0)
     {
@@ -399,28 +397,28 @@ printk("mipi_sony_set_backlight prev_bl_level =%d,mfd->bl_level=%d, bl_level =%d
         gpio_set_value_cansleep(gpio16, GPIO_HIGH_VALUE);
         first_enable  = 1;
     }
-#endif	
-    mutex_lock(&sony_state.lcd_mutex);	
+#endif
+    mutex_lock(&sony_state.lcd_mutex);
     mipi_set_tx_power_mode(0);
-#if 0	
+#if 0
     if(charger_flag == 1 && bl_level > 0){
 			mipi_dsi_cmds_tx(&sony_tx_buf, sony_display_init_cmds,
 					ARRAY_SIZE(sony_display_init_cmds));
 			mipi_dsi_cmds_tx(&sony_tx_buf, sony_display_on_cmds,
 					ARRAY_SIZE(sony_display_on_cmds));
 	}
-#endif	
+#endif
     mipi_dsi_cmds_tx(&sony_tx_buf, sony_display_cabc_bl_set_cmds,
 			ARRAY_SIZE(sony_display_cabc_bl_set_cmds));
-#if 0	
+#if 0
    if(charger_flag == 1 && bl_level == 0){
 			mipi_dsi_cmds_tx(&sony_tx_buf, sony_display_off_cmds,
 					ARRAY_SIZE(sony_display_off_cmds));
 	}
-#endif	
+#endif
     prev_bl_level = mfd->bl_level;
     mipi_set_tx_power_mode(1);
-    mutex_unlock(&sony_state.lcd_mutex);		
+    mutex_unlock(&sony_state.lcd_mutex);
     if(bl_level == 0)
     {
 #ifdef FEATURE_RENESAS_BL_CTRL_CHG
@@ -428,15 +426,15 @@ printk("mipi_sony_set_backlight prev_bl_level =%d,mfd->bl_level=%d, bl_level =%d
 			gpio_set_value_cansleep(gpio16, GPIO_LOW_VALUE);
 		if(gpio_get_value_cansleep(gpio24))
 			gpio_set_value_cansleep(gpio24, GPIO_LOW_VALUE);
-		
+
 #else
           gpio_set_value_cansleep(gpio16, GPIO_LOW_VALUE);
           gpio_set_value_cansleep(gpio24, GPIO_LOW_VALUE);
           first_enable = 0;
-#endif		      
-    }	
+#endif
+    }
     //EXIT_FUNC2();
-#endif	
+#endif
 }
 
 
@@ -447,9 +445,9 @@ static int __devinit mipi_sony_lcd_probe(struct platform_device *pdev)
         mipi_sony_pdata = pdev->dev.platform_data;
 		return 0;
 	}
-       mutex_init(&sony_state.lcd_mutex);	
+       mutex_init(&sony_state.lcd_mutex);
 	msm_fb_add_device(pdev);
-	
+
 	return 0;
 }
 

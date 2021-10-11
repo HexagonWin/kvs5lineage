@@ -4204,6 +4204,7 @@ MACHINE_START(MSM8960_CSFB, "QCT MSM8960 CSFB")
 	.restart = msm_restart,
 MACHINE_END
 
+// Pantech VEGA S5 - IM-A840S (EF44S)
 MACHINE_START(MSM8960_EF44S, "QCT MSM8960 EF44S")
 	.map_io = msm8960_map_io,
 	.reserve = msm8960_reserve,
@@ -4216,7 +4217,7 @@ MACHINE_START(MSM8960_EF44S, "QCT MSM8960 EF44S")
 	.restart = msm_restart,
 MACHINE_END
 
-
+// Pantech Perception - ADR930L (VEGAPVW)
 MACHINE_START(MSM8960_VEGAPVW, "QCT MSM8960 VEGAPVW")
 	.map_io = msm8960_map_io,
 	.reserve = msm8960_reserve,
@@ -4229,6 +4230,7 @@ MACHINE_START(MSM8960_VEGAPVW, "QCT MSM8960 VEGAPVW")
 	.restart = msm_restart,
 MACHINE_END
 
+// Pantech Discover - P9090 (MAGNUS)
 MACHINE_START(MSM8960_MAGNUS, "QCT MSM8960 MAGNUS")
 	.map_io = msm8960_map_io,
 	.reserve = msm8960_reserve,
